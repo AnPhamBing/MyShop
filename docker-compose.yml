@@ -1,0 +1,185 @@
+version: '3.7'
+services:
+
+  mysql-server:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: dummypassword 
+      MYSQL_USER: todos-user
+      MYSQL_PASSWORD: dummytodos
+      MYSQL_DATABASE: todos
+    volumes:
+      - mysql-database-data-volume:/var/lib/mysql
+    networks:
+      - icommerce-compose-network
+  
+  rabbitmq-server:
+    image: rabbitmq:3.5.3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    networks:
+      - icommerce-compose-network
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    container_name: zipkin-server
+    environment:
+      STORAGE_TYPE: mem
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+    ports:
+      - "9411:9411"
+    restart: always
+    depends_on:
+      - rabbitmq-server
+    networks:
+      - icommerce-compose-network
+
+  icommerce-discovery:
+    #image: icommerce/icommerce-discovery:0.0.1-SNAPSHOT
+    build:
+      context: icommerce-discovery
+      dockerfile: Dockerfile
+    ports:
+      - "8010:8010"
+    restart: always
+    networks:
+      - icommerce-compose-network
+
+  icommerce-gateway:
+    #image: icommerce/icommerce-gateway:0.0.1-SNAPSHOT
+    build:
+      context: icommerce-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8020:8020"
+    restart: always
+    depends_on:
+      - icommerce-discovery
+      - zipkin-server
+    networks:
+      - icommerce-compose-network
+
+  icommerce-core:
+    #image: icommerce/icommerce-core:0.0.1-SNAPSHOT
+    build:
+      context: icommerce-core
+      dockerfile: Dockerfile    
+    ports:
+      - "8030:8030"
+    restart: always
+    depends_on:
+      - icommerce-discovery
+      - zipkin-server
+      - mysql-server
+    environment:
+      RDS_HOSTNAME: mysql-server
+      RDS_PORT: 3306
+      RDS_DB_NAME: todos
+      RDS_USERNAME: todos-user
+      RDS_PASSWORD: dummytodos
+    networks:
+      - icommerce-compose-network
+
+  icommerce-orchestrator:
+    #image: icommerce/icommerce-orchestrator:0.0.1-SNAPSHOT
+    build:
+      context: icommerce-orchestrator
+      dockerfile: Dockerfile    
+    ports:
+      - "8040:8040"
+    restart: always
+    environment:
+      ICOMMERCE_PAYMENT_URI: http://icommerce-payment:8050
+      ICOMMERCE_INVENTORY_URI: http://icommerce-inventory:8060
+    depends_on:
+      - icommerce-payment
+      - icommerce-inventory
+      - icommerce-discovery
+      - zipkin-server
+    networks:
+      - icommerce-compose-network
+  
+  icommerce-payment:
+    #image: icommerce/icommerce-payment:0.0.1-SNAPSHOT
+    build:
+      context: icommerce-payment
+      dockerfile: Dockerfile    
+    ports:
+      - "8050:8050"
+    restart: always
+    depends_on:
+      - icommerce-discovery
+      - zipkin-server
+      - mysql-server
+    networks:
+      - icommerce-compose-network
+
+  icommerce-inventory:
+    #image: icommerce/icommerce-inventory:0.0.1-SNAPSHOT
+    build:
+      context: icommerce-inventory
+      dockerfile: Dockerfile    
+    ports:
+      - "8060:8060"
+    restart: always
+    depends_on:
+      - icommerce-discovery
+      - zipkin-server
+      - mysql-server
+    networks:
+      - icommerce-compose-network
+
+  elasticsearch:
+    image: elasticsearch:7.7.0
+    container_name: elasticsearch
+    hostname: elasticsearch
+    environment:
+        - "discovery.type=single-node"
+    ports:
+        - 9200:9200
+        - 9300:9300
+    networks:
+      - icommerce-compose-network
+
+  kibana:
+    image: kibana:7.7.0
+    container_name: kibana
+    hostname: kibana
+    ports:
+        - 5601:5601
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    networks:
+      - icommerce-compose-network
+
+  logstash:
+    image: logstash:7.7.0
+    container_name: logstash
+    hostname: logstash
+    ports:
+        - 9600:9600
+        - 8089:8089
+    volumes:
+      - .\logstash:/usr/share/logstash/pipeline/
+    links:
+      - icommerce-compose-network
+    depends_on:
+      - elasticsearch
+    networks:
+      - icommerce-compose-network
+
+# Volumes
+volumes:
+  mysql-database-data-volume:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  icommerce-compose-network:
