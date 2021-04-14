@@ -48,6 +48,9 @@ Alternative options: Keycloak, WSO2 Identity Server
 Alternative options: WSO2 ESB (Enterprise Service Bus)
 
 + Distributed Tracing using Zipkin  
+![](doc/Zipkin-Dependencies-1.PNG)
+![](doc/Zipkin-Dependencies-2.PNG)
+![](doc/Zipkin-Dependencies-4-Trace.PNG)
 
 + ELK stask for monitoring system, and user data analytics
 ![](doc/ELK-capture-3.PNG)
