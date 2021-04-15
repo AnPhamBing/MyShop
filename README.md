@@ -14,24 +14,20 @@ In order to get to the market quickly, they just want to build an MVP version wi
 
 ## Table of Contents  
 ---  
-**1. [System Architecture Overview](#1-system-architecture-overview)**<br>
+**1. [System Architecture](#1-system-architecture)**<br>
 **2. [Components](#2-components)**<br>
 **3. [Entity Relationship Diagram & Data Analysis](#3-entity-relationship-diagram-&-data-analysis)**<br>
 **4. [Development and Deployment Guideline](#4-development-and-deployment-guideline)**<br>
 **5. [CI/CD Workflow](#5-cicd-workflow)**<br>
 **6. [Next Steps](#6-next-steps)**<br>
 
-## 1. System Architecture Overview  
+## 1. System Architecture  
 ---  
-
 Microservices Architecture with Saga Pattern (supporting Distributed Transaction)
-
-(The full diagram will be added soon)  
-
+![](doc/iCommerce-SoftwareArchitectureDiagram.svg)
 
 ## 2. Components  
----
-
+---  
 + Web portal designed using Angular  
 ![](doc/iCommerce-2-Login-w-Facebook.PNG)
 ![](doc/iCommerce-3-LoggedIn.PNG)
@@ -90,8 +86,7 @@ Service Discovery and Load Balancing alternatives: Kubernetes, HashiCorp Consul
 
 
 ## 3. Entity Relationship Diagram & Data Analysis
---- 
-
+---  
 ### 3.1. Relational Entities: Customer, Product, Order  
 + Based on the requirements, we can see that the Customer, Product, and Order data need to be consistent.  
 So it's reasonable to have RDBMS handle it.  
@@ -105,7 +100,7 @@ So it's reasonable to have RDBMS handle it.
 + We can also keep track of the system health, and service calls by using Logging and Reporting system like ELK.  
 
 ## 4. Development and Deployment Guideline
----
+---  
 
 ### 4.1. Prerequisites  
 
@@ -127,7 +122,7 @@ $ mvn clean install
 $ npm install
 ```
 
-### 4.2. How To Run  
+### 4.3. How To Run  
 
 + For backend microservices, please run the built jar file from step 1
 or
@@ -139,7 +134,7 @@ $ npm start
 ```
 or build release package and then deploy to any HTTP server  
 
-### 4.2. How To Deploy   
+### 4.4. How To Deploy   
 
 The packages can run as (1) standalone apps  
 OR  
@@ -149,15 +144,17 @@ can be deployed to (3) Kubernetes cluster
 
 
 ## 5. CI/CD Workflow
----
+---  
 + Souce code managed, and committed to Git repository  
 + Release packages built as Docker images  
 + Docker images stored at Docker Registry  
 + Kubernetes starts new instances of Docker images  
 + Jenkins for pipeline, automatic build and deployment  
+![](doc/Kubernetes-CICD-using-Jenkins-on-GoogleCloud.png)
 
 ## 6. Next Steps  
---- 
+---  
+
 ### 6.1. Technical Enhancements  
 + Adding Dynamic Configuration using Spring Cloud Config Bus beacause we're going to have clusters with hundreds, even thounsands of nodes :)
 + Adding Data Service component to centralize handling multiple data sources, considering WSO2 Data Services Server (DSS)  
@@ -167,6 +164,7 @@ Tools: Burp Suite, Wireshark, Postman
 
 ### 6.2. Features Improvements 
 + Implementing Product History  
++ Developing Shipping Service  
 + Introducing recommendation system (product sugguestion, best price, best buy)
 + Integrating with CRM system for better customer interaction (events, points, coupons, vouchers...)
 
