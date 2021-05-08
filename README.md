@@ -13,7 +13,6 @@ In order to get to the market quickly, they just want to build an MVP version wi
 
 
 ## Table of Contents  
----  
 **1. [System Architecture](#1-system-architecture)**<br>
 **2. [Components](#2-components)**<br>
 **3. [Entity Relationship Diagram & Data Analysis](#3-entity-relationship-diagram-&-data-analysis)**<br>
@@ -21,13 +20,13 @@ In order to get to the market quickly, they just want to build an MVP version wi
 **5. [CI/CD Workflow](#5-cicd-workflow)**<br>
 **6. [Next Steps](#6-next-steps)**<br>
 
+
 ## 1. System Architecture  
----  
 Microservices Architecture with Saga Pattern (supporting Distributed Transaction)
-![](doc/iCommerce-SoftwareArchitectureDiagram.svg)
+![](doc/iCommerce-SoftwareArchitectureDiagram-0.1.1.svg)
+
 
 ## 2. Components  
----  
 + Web portal designed using Angular  
 ![](doc/iCommerce-2-Login-w-Facebook.PNG)
 ![](doc/iCommerce-3-LoggedIn.PNG)
@@ -59,6 +58,8 @@ User big data will be proccessed by AI for product recommendation.
 + API Gateway using Spring Cloud Gateway (previously, Netflix Zuu).  
 Service Discovery and Load Balancing alternatives: Kubernetes, HashiCorp Consul   
 
++ Dynamic Configuration using Spring Cloud Config Bus beacause we're going to have clusters with hundreds, even thounsands of nodes :)  
+
 + Microservices implemented with Spring Boot and Spring Cloud  
 ![](doc/spring-cloud-architecture.jpg)
 
@@ -85,8 +86,8 @@ Service Discovery and Load Balancing alternatives: Kubernetes, HashiCorp Consul
 + Dockerfile, docker-compose.yml for packaging and containerization  
 
 
-## 3. Entity Relationship Diagram & Data Analysis
----  
+## 3. Entity Relationship Diagram & Data Analysis  
+
 ### 3.1. Relational Entities: Customer, Product, Order  
 + Based on the requirements, we can see that the Customer, Product, and Order data need to be consistent.  
 So it's reasonable to have RDBMS handle it.  
@@ -99,8 +100,8 @@ So it's reasonable to have RDBMS handle it.
 + As for User Behaviour data like searching, purchasing... we can store in Elasticsearch, MongoDB, Cassandra... for data mining, and recommendation system.
 + We can also keep track of the system health, and service calls by using Logging and Reporting system like ELK.  
 
-## 4. Development and Deployment Guideline
----  
+
+## 4. Development and Deployment Guideline  
 
 ### 4.1. Prerequisites  
 
@@ -112,7 +113,7 @@ So it's reasonable to have RDBMS handle it.
 
 You can easily build, run, and deploy all the services as they're just plain simple Spring Cloud microservices, and Angular app.  
 
-+ To build backend microservices, please navigate to icommerce-parent directory, and run
++ To build backend microservices, please navigate to icommerce-parent directory, and run  
 ```
 $ mvn clean install
 ```
@@ -143,8 +144,7 @@ OR
 can be deployed to (3) Kubernetes cluster  
 
 
-## 5. CI/CD Workflow
----  
+## 5. CI/CD Workflow  
 + Souce code managed, and committed to Git repository  
 + Release packages built as Docker images  
 + Docker images stored at Docker Registry  
@@ -152,11 +152,10 @@ can be deployed to (3) Kubernetes cluster
 + Jenkins for pipeline, automatic build and deployment  
 ![](doc/Kubernetes-CICD-using-Jenkins-on-GoogleCloud.png)
 
+
 ## 6. Next Steps  
----  
 
 ### 6.1. Technical Enhancements  
-+ Adding Dynamic Configuration using Spring Cloud Config Bus beacause we're going to have clusters with hundreds, even thounsands of nodes :)
 + Adding Data Service component to centralize handling multiple data sources, considering WSO2 Data Services Server (DSS)  
 + Executing load test and performance test on the whole system on production-ready environment (AWS Cloud, Google Cloud). Tools: SoapUI, JMeter  
 + Performing security test on the whole system, network.
@@ -165,8 +164,8 @@ Tools: Burp Suite, Wireshark, Postman
 ### 6.2. Features Improvements 
 + Implementing Product History  
 + Developing Shipping Service  
-+ Introducing recommendation system (product sugguestion, best price, best buy)
-+ Integrating with CRM system for better customer interaction (events, points, coupons, vouchers...)
++ Introducing recommendation system (product sugguestion, best price, best buy)  
++ Integrating with CRM system for better customer interaction (events, points, coupons, vouchers...)  
 
 That's it for now :)  
 Enjoy and stay tuned for more updates!  
