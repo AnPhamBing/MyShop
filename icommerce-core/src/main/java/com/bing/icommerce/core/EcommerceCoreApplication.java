@@ -12,12 +12,12 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 @SpringBootApplication
-public class SpringBootEcommerceApplication {
+public class EcommerceCoreApplication {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootEcommerceApplication.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EcommerceCoreApplication.class);
 
 	public static void main(String[] args) throws UnknownHostException {
-		final ConfigurableApplicationContext applicationContext = SpringApplication.run(SpringBootEcommerceApplication.class, args);
+		final ConfigurableApplicationContext applicationContext = SpringApplication.run(EcommerceCoreApplication.class, args);
 		final ConfigurableEnvironment env = applicationContext.getEnvironment();
 		LOGGER.info(
 				"\n----------------------------------------------------------\n"

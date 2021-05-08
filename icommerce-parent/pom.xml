@@ -13,6 +13,7 @@
 
 	<modules>
 		<module>../icommerce-common</module>
+		<module>../icommerce-config</module>
 		<module>../icommerce-discovery</module>
 		<module>../icommerce-gateway</module>
 		<module>../icommerce-core</module>
