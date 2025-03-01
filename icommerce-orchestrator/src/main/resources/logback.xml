@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+	<include
+		resource="org/springframework/boot/logging/logback/base.xml" />
+	<appender name="ELK"
+		class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+		<destination>localhost:4560</destination>
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+			<includeCallerInfo>true</includeCallerInfo>
+			<customFields>{"index":"icommerce-orchestrator"}</customFields>
+		</encoder>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="ELK" />
+	</root>
+</configuration>

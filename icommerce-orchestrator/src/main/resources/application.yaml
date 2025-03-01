@@ -1,0 +1,16 @@
+server:
+  port: 8070
+---
+spring.cloud.stream:
+  function:
+    definition: processor
+  bindings:
+    processor-in-0:
+      destination: order-created
+    processor-out-0:
+      destination: order-updated
+---
+service:
+  endpoints:
+    inventory: http://localhost:8060
+    payment: http://localhost:8050
